@@ -24,7 +24,7 @@ global steps;
 global Ts;
 global Np;
 global Nc;
-steps = 200;
+steps = 600;
 Ts = 0.1;
 Np = 10;
 Nc = 10;
@@ -32,10 +32,10 @@ Nc = 10;
 eta_fdb = zeros(4,steps);
 eta_fdb_last = zeros(4,1);
 eta_ref = zeros(4,steps);
-nu_ref = zeros(4,1);
+nu_ref = zeros(4,steps);
 nu_fdb = zeros(4,steps);
-tau_ref = zeros(4,1);
-torque_ref = zeros(4,1);
+tau_ref = zeros(4,steps);
+torque_ref = zeros(4,steps);
 
 global A1;
 global B1;
@@ -52,8 +52,8 @@ global hatx2;
 hatx2 = zeros(8,1);
 global lambda;
 global alpha;
-alpha = 0.1;
-lambda = 0.2;
+alpha = 0.01;
+lambda = 0.02;
 
 global na1;
 global na2;
@@ -81,7 +81,7 @@ A1 = [Ad1,zeros(n_x,l_y);Cd1*Ad1,eye(l_y)];
 B1 = [Bd1;Cd1*Bd1];
 C1 = [zeros(l_y,n_x),eye(l_y)];
 
-M = diag([18,0.332,0.418,0.415]);%mass matrix
+M = diag([28.85,0.744,0.888,0.866]);%mass matrix
 
 C = m2c_auv(M,nu_fdb(:,1));
 D = diag([-2.12,-0.18,-0.24,-0.19]);
@@ -129,10 +129,18 @@ end
 global du;
 du = zeros(4,1);
 
+% 为了检测一下耗时，所以设置一个时间差分量
+global delta_t;
+delta_t=zeros(1,steps);
+
+global lower_torque;
+global lower_delta_t;
+lower_torque=zeros(4,steps);
+lower_delta_t=zeros(1,steps);
 %% Start Program
 
-serial_rx = serialport("COM13",9600);
-serial_tx = serialport("COM11",115200);
+serial_rx = serialport("COM8",9600);
+serial_tx = serialport("COM9",115200);
 global sig; %用于指示迭代次数
 sig = 0;
 flush(serial_rx);

@@ -25,6 +25,11 @@ M(:,1:4) = [eye(4);-eye(4)];
 gamma=[sqrt(nb2*((2-alpha)/lambda-x'*x))/nb2*ones(nb2,1);
 sqrt(nb2*((2-alpha)/lambda-x'*x))/nb2*ones(nb2,1)];
 
+if ~isreal(gamma)
+    gamma_real = real(gamma);
+    gamma_imag = imag(gamma);
+    gamma = realsqrt(gamma_real.^2+gamma_imag.^2);
+end
 options=optimset('LargeScale','off','MaxIter',300,...
         'algorithm','interior-point-convex','display','on');
 

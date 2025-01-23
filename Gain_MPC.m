@@ -21,6 +21,6 @@ end
 
 Phi_Phi=Phi'*Phi;
 [nPhi,mPhi]=size(Phi_Phi);
-diagR=[45*ones(nPhi/4,1);0.9*ones(nPhi*3/4,1)];
+diagR=[0*ones(nPhi/4,1);50*ones(nPhi/4,1);150*ones(nPhi/4,1);50*ones(nPhi/4,1)];
 BarR=0.1*diag(diagR);
 
